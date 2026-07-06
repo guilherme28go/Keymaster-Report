@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KeyReport</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="light-theme" id="app-body">
+
+    <div id="login-container">
+        <div id="login-box">
+            <div class="header-login">
+                <h2>Keymaster Report</h2>
+                <p>Gerencie seus projetos, acompanhe bugs e organize suas ideias em um só lugar.</p>
+            </div>
+            <input type="email" id="email" placeholder="seu-email@exemplo.com">
+            <input type="password" id="senha" placeholder="Sua senha secreta">
+            <div class="login-actions">
+                <button class="btn-entrar" onclick="realizarLogin()">Entrar</button>
+                <button class="btn-cadastrar" onclick="realizarCadastro()">Criar conta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-principal" style="display: none;">
+        <div class="container">
+            
+           <header class="hud-panel">
+    <div class="hud-item">
+        <span class="hud-label">Produção por</span>
+        <span class="hud-value">KeyMaster Studio</span>
+    </div>
+    
+    <div class="hud-item flex-row">
+        <button class="theme-toggle-btn" onclick="alternarTema()">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            Alternar Tema
+        </button>
+        <div class="api-container" style="display: flex; gap: 10px; align-items: center;">
+            <span class="status-dot"></span> <input type="password" id="apiKey" placeholder="Cole sua chave aqui..." 
+                   style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; flex-grow: 1;">
+            
+            <div class="configuracao-api">
+                <button class="botao-salvar" onclick="salvarApiKey()">Salvar Chave</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+            <section id="tela-inicial" class="view-section">
+                <div class="welcome-box">
+                    <h1>Bem-vindo ao KeyMaster Report</h1>
+                    <p>Crie um novo projeto ou selecione um existente abaixo para entrar no painel de gerenciamento.</p>
+                </div>
+
+                <div class="glass-container form-quick-create">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="svg-icon svg-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            Inicializar Novo Projeto
+                        </h2>
+                    </div>
+                    <div class="form-group inline-form">
+                        <input type="text" id="nomeProjeto" class="form-input" placeholder="Ex: Meu App Web Corporativo...">
+                        <button class="btn btn-primary" onclick="adicionarProjeto()">Salvar</button>
+                    </div>
+                </div>
+
+                <div class="glass-container">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                            Seus Projetos Ativos
+                        </h2>
+                        <div id="areaResultados"></div>
+                    </div>
+                    <div id="listaProjetos" class="projetos-lista-container"></div>
+                </div>
+            </section>
+
+            <section id="tela-projeto" class="view-section escondido">
+                <div class="navigation-bar">
+                    <button class="btn btn-secondary btn-flex" onclick="voltarParaInicial()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                        Voltar para a Lista de Projetos
+                    </button>
+                    <h2 id="painelTituloProjeto" class="projeto-atual-title">Projeto: Nenhum</h2>
+                </div>
+
+                <div class="main-grid">
+                    <div class="glass-container">
+                        <nav class="nav-tabs">
+                            <button class="nav-tab active" onclick="mudarAba('estilo')">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path><path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"></path></svg>
+                                Ideias
+                            </button>
+                            <button class="nav-tab" onclick="mudarAba('funcoes')">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                Funções
+                            </button>
+                            <button class="nav-tab" onclick="mudarAba('bugs')">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                Logs & Bugs
+                            </button>
+                            <button class="nav-tab" onclick="mudarAba('config')">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                Configurações
+                            </button>
+                        </nav>
+                        
+                        <div class="abas-conteudo-container">
+                            <div id="conteudo-estilo" class="secao-aba">
+                                <label class="form-label">Anotações Importantes:</label>
+                                <textarea id="campoEstilo" class="form-textarea code-style" placeholder="Ex: Azul escuro moderno..."></textarea>
+                                <button class="btn btn-primary" onclick="salvarDadosAba('estilo')" style="justify-content: center;">Salvar Design</button>
+                            </div>
+                            <div id="conteudo-funcoes" class="secao-aba escondido">
+                                <label class="form-label">Funcionalidades do Site/app:</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                    <input type="text" id="campoFuncoes-input" class="form-textarea" style="height: 10px;" placeholder="Digite uma funcionalidade e aperte Enter ou +">
+                                    <button class="btn btn-primary" onclick="adicionarItemChecklist('campoFuncoes')" style="height: 42px; width: 45px; font-weight: bold;">+</button>
+                                </div>
+                                <div id="campoFuncoes-container"></div>
+                            </div>
+                            <div id="conteudo-bugs" class="secao-aba escondido">
+                                <label class="form-label">Controle de Bugs & Logs:</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                    <input type="text" id="campoBugs-input" class="form-textarea" style="height: 42px;" placeholder="Digite um problema encontrado...">
+                                    <button class="btn btn-primary" onclick="adicionarItemChecklist('campoBugs')" style="height: 42px; width: 45px; font-weight: bold;">+</button>
+                                </div>
+                                <div id="campoBugs-container"></div>
+                            </div>
+                            <div id="conteudo-config" class="secao-aba escondido">
+                                <label class="form-label">Diretrizes e Regras de uso:</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                    <input type="text" id="campoConfig-input" class="form-textarea" style="height: 42px;" placeholder="Digite uma instrução ou restrição...">
+                                    <button class="btn btn-primary" onclick="adicionarItemChecklist('campoConfig')" style="height: 42px; width: 45px; font-weight: bold;">+</button>
+                                </div>
+                                <div id="campoConfig-container"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-container full-height-chat">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                Assistant KeyIa
+                            </h2>
+                        </div>
+                        <div class="ai-body" id="iaAnaliseTexto"></div>
+                        <div class="ai-footer">
+                            <input type="text" id="chatInput" class="form-input" placeholder="Pergunte sobre código ou envie dúvidas...">
+                            <button class="btn btn-primary btn-flex" onclick="enviarChatIA()">
+                                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div> </div> <script src="script.js" defer></script>
+        
+</body>
+</html>
