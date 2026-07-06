@@ -4,17 +4,27 @@
 
 let cargasAtivas = 0;
 
+/**
+ * Chame no INÍCIO de qualquer operação assíncrona
+ * (fetch, Supabase, leitura/escrita pesada, etc).
+ */
 function iniciarCarregamento() {
     cargasAtivas++;
     atualizarStatusDot();
 }
 
+/**
+ * Chame no FIM da operação, SEMPRE dentro de um bloco `finally`,
+ * para garantir que o contador desça mesmo se a operação falhar.
+ */
 function finalizarCarregamento() {
     cargasAtivas = Math.max(0, cargasAtivas - 1);
     atualizarStatusDot();
 }
 
-
+/**
+ * Aplica a cor correta no dot com base no contador atual.
+ */
 function atualizarStatusDot() {
     const dot = document.querySelector('.status-dot');
     if (!dot) return;
@@ -27,6 +37,14 @@ function atualizarStatusDot() {
     }
 }
 
+/**
+ * Mantido por compatibilidade com código antigo que já chamava
+ * definirStatus('saving' | 'success' | 'error' | 'neutral').
+ * Agora ele conversa com o sistema de contador em vez de mexer
+ * direto na cor: 'saving' soma uma carga, os outros estados
+ * descontam essa carga (voltando ao verde quando ninguém mais
+ * estiver carregando) e opcionalmente piscam uma cor de feedback.
+ */
 window.definirStatus = function (estado) {
     const dot = document.querySelector('.status-dot');
     if (!dot) return;
@@ -50,6 +68,8 @@ window.definirStatus = function (estado) {
     // já deixou o dot verde se não houver mais cargas ativas.
 };
 
+// Sinaliza carregamento desde já, pois o app vai buscar sessão
+// e projetos assim que o DOM estiver pronto (ver seção 3).
 iniciarCarregamento();
 
 // ==========================================================
@@ -113,6 +133,43 @@ window.realizarLogin = async function () {
         }
     } catch (e) {
         console.error("Erro inesperado:", e);
+    } finally {
+        finalizarCarregamento();
+    }
+};
+
+window.realizarCadastro = async function () {
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+
+    if (!email || !senha) {
+        alert("Preencha e-mail e senha para criar a conta.");
+        return;
+    }
+
+    iniciarCarregamento();
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: senha,
+        });
+
+        if (error) {
+            alert("Erro ao criar conta: " + error.message);
+            return;
+        }
+
+        // Se a confirmação de e-mail estiver ativada no Supabase,
+        // `data.session` vem nulo até o usuário clicar no link enviado.
+        if (data.user && !data.session) {
+            alert("Conta criada! Verifique seu e-mail para confirmar o cadastro antes de entrar.");
+        } else {
+            console.log("Cadastro realizado e sessão iniciada automaticamente.");
+            // A troca de tela acontece via onAuthStateChange, igual no login
+        }
+    } catch (e) {
+        console.error("Erro inesperado no cadastro:", e);
+        alert("Erro inesperado ao criar conta.");
     } finally {
         finalizarCarregamento();
     }
@@ -658,15 +715,14 @@ window.enviarChatIA = async function () {
 };
 
 // ==========================================================
-// 12. BUSCA DE PROJETOS
+// 12. BUSCA DE PROJETOS (função auxiliar)
 // ==========================================================
 // Observação: esta função e `carregarProjetosDoSupabase` fazem
 // basicamente a mesma consulta ('projetos').select('*'). Mantive
 // as duas por segurança (caso algo no HTML chame `buscarProjetos`
-// diretamente), mas vale avaliar se realmente precisa das
+// diretamente), mas vale avaliar se você realmente precisa das
 // duas rodando — hoje ela só loga no console e não atualiza
 // appState nem a tela.
-
 async function buscarProjetos() {
     console.log("Status: Carregando...");
 
