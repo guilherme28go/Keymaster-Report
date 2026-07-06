@@ -7,9 +7,7 @@
 
 ---
 
-KeyMaster nasceu de um problema simples: quando você tem vários projetos pessoais rodando ao mesmo tempo, é fácil perder o fio da meada — o que já foi feito, o que ainda tem bug, o que era aquela ideia de estilo que você anotou há duas semanas. É um dashboard single-page para organizar isso tudo por projeto, com checklists, anotações e um chat de IA que conhece o contexto do que você está construindo.
-
-Sem framework, sem build step. HTML, CSS e JavaScript puro, Supabase como backend e a API da Groq para o chat.
+KeyMaster nasceu de um problema simples: quando você tem vários projetos pessoais rodando ao mesmo tempo, é fácil perder o fio da meada — o que já foi feito, o que ainda tem bug, o que era aquela ideia de estilo que você anotou há duas semanas. É um dashboard single-page para organizar isso tudo por projeto, com checklists, anotações e um chat de IA que conhece o contexto do que você está construindo. Acesse em: ![keyreport.vercel.app](keyreport.vercel.app)
 
 ## Índice
 
