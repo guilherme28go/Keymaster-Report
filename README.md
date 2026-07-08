@@ -90,12 +90,13 @@ Toda operação que toca o Supabase ou faz trabalho pesado — salvar um projeto
 
 4. **Chat de IA** — gere uma chave em [console.groq.com](https://console.groq.com/) e cole no campo de configuração dentro da própria aplicação; ela fica em `localStorage`, nunca no código.
 
-5. **Execução** — sirva os arquivos com um servidor local (ex: extensão *Live Server* do VS Code, ou `npx serve`). Abrir via `file://` direto costuma bloquear as requisições ao Supabase por CORS.
+5. **Execução** — sirva os arquivos com um servidor local ou use um dominio próprio. Abrir via `file://` direto costuma bloquear as requisições ao Supabase por CORS.
 
 ## Estrutura do projeto
 
 ```
 .
+├── favicon.png  # ícone principal
 ├── index.html   # marcação da aplicação
 ├── style.css    # tema, layout e componentes
 └── app.js       # autenticação, projetos, checklists, chat, status-dot
@@ -109,10 +110,15 @@ Toda operação que toca o Supabase ou faz trabalho pesado — salvar um projeto
 ## Roadmap
 
 - [ ] Variáveis de ambiente para credenciais
-- [ ] Exportar/importar projetos em JSON ou similares
+- [ ] Aplicaar estatus de progresso de projetos
 - [ ] Ajustar estilos e funções 'duplicadas'
 - [ ] Melhorar expansividade para telas pequenas
 
 ## Licença
 
-MIT — use, modifique e adapte livremente.
+Todos os direitos reservados ao MIT. Qualquer alteração ou melhoria no código deve ser reportada diretamente para garantir que o sistema seja aprimorado constantemente. O sistema é de uso livre, permitindo que qualquer pessoa o utilize sem restrições. **Para acessar o modelo de teste, utilize as seguintes credenciais:** 
+
+- E-mail: user@deploy.com
+- Senha: user-deploy
+    
+> **Atenção:** quaisquer contas criadas indevidamente poderão ser removidas sem aviso prévio. Utilize o sistema de forma responsável e ética.
