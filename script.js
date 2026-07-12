@@ -1,30 +1,19 @@
 // ==========================================================
-// 0. SISTEMA CENTRAL DE STATUS (status-dot)
+// SISTEMA CENTRAL DE STATUS
 // ==========================================================
 
 let cargasAtivas = 0;
 
-/**
- * Chame no INÍCIO de qualquer operação assíncrona
- * (fetch, Supabase, leitura/escrita pesada, etc).
- */
 function iniciarCarregamento() {
     cargasAtivas++;
     atualizarStatusDot();
 }
 
-/**
- * Chame no FIM da operação, SEMPRE dentro de um bloco `finally`,
- * para garantir que o contador desça mesmo se a operação falhar.
- */
 function finalizarCarregamento() {
     cargasAtivas = Math.max(0, cargasAtivas - 1);
     atualizarStatusDot();
 }
 
-/**
- * Aplica a cor correta no dot com base no contador atual.
- */
 function atualizarStatusDot() {
     const dot = document.querySelector('.status-dot');
     if (!dot) return;
@@ -37,14 +26,6 @@ function atualizarStatusDot() {
     }
 }
 
-/**
- * Mantido por compatibilidade com código antigo que já chamava
- * definirStatus('saving' | 'success' | 'error' | 'neutral').
- * Agora ele conversa com o sistema de contador em vez de mexer
- * direto na cor: 'saving' soma uma carga, os outros estados
- * descontam essa carga (voltando ao verde quando ninguém mais
- * estiver carregando) e opcionalmente piscam uma cor de feedback.
- */
 window.definirStatus = function (estado) {
     const dot = document.querySelector('.status-dot');
     if (!dot) return;
@@ -65,11 +46,9 @@ window.definirStatus = function (estado) {
         setTimeout(() => dot.classList.remove('status-error'), 1500);
     }
     // 'neutral' não precisa fazer mais nada: atualizarStatusDot()
-    // já deixou o dot verde se não houver mais cargas ativas.
 };
 
 // Sinaliza carregamento desde já, pois o app vai buscar sessão
-// e projetos assim que o DOM estiver pronto (ver seção 3).
 iniciarCarregamento();
 
 // ==========================================================
@@ -185,9 +164,6 @@ window.fazerLogoff = async function () {
     }
 };
 
-// Única definição (a antiga estava duplicada e a primeira versão
-// tinha um bug: atribuía o retorno de `.style.display = 'none'`
-// à variável loginContainer em vez do próprio elemento).
 function verificarEstadoLogin() {
     const loginContainer = document.getElementById('login-container');
     const appContainer = document.getElementById('app-principal');
@@ -223,7 +199,7 @@ function verificarEstadoLogin() {
 }
 
 // ==========================================================
-// 4. CARREGAMENTO DE PROJETOS (Supabase)
+// 4. CARREGAMENTO DE PROJETOS
 // ==========================================================
 
 async function carregarProjetosDoSupabase() {
@@ -251,7 +227,7 @@ async function carregarProjetosDoSupabase() {
 }
 
 // ==========================================================
-// 5. INICIALIZAÇÃO (único DOMContentLoaded)
+// 5. INICIALIZAÇÃO
 // ==========================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -293,13 +269,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         configurarInputsChecklist();
     } finally {
         // Encerra a carga aberta lá no topo do arquivo (iniciarCarregamento()
-        // logo após a definição do sistema de status).
         finalizarCarregamento();
     }
 });
 
 // ==========================================================
-// 6. PROJETOS (lista)
+// 6. PROJETOS
 // ==========================================================
 
 window.renderizarProjetos = function () {
@@ -715,14 +690,14 @@ window.enviarChatIA = async function () {
 };
 
 // ==========================================================
-// 12. BUSCA DE PROJETOS (função auxiliar)
+// 12. BUSCA DE PROJETOS
 // ==========================================================
+
 // Observação: esta função e `carregarProjetosDoSupabase` fazem
 // basicamente a mesma consulta ('projetos').select('*'). Mantive
 // as duas por segurança (caso algo no HTML chame `buscarProjetos`
-// diretamente), mas vale avaliar se você realmente precisa das
-// duas rodando — hoje ela só loga no console e não atualiza
-// appState nem a tela.
+// diretamente), mas vale avaliar se precisa das duas rodando
+
 async function buscarProjetos() {
     console.log("Status: Carregando...");
 
