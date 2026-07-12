@@ -1,6 +1,7 @@
 /* ==========================================================
    RESET BÁSICO
    ========================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -21,6 +22,7 @@ html, body {
 /* ==========================================================
    TEMA CLARO / ESCURO
    ========================================================== */
+
 body.light-theme {
     --bg-color: #f3f4f6;
     --glass-bg: rgba(255, 255, 255, 0.75);
@@ -57,10 +59,11 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 /* ==========================================================
-   APP PRINCIPAL / LOGIN (overlay)
+   APP PRINCIPAL / LOGIN
    ========================================================== */
+
 #app-principal {
-    display: none; /* controlado via JS (verificarEstadoLogin / atualizarTela) */
+    display: none; /* verificarEstadoLogin / atualizarTela */
 }
 
 #login-container {
@@ -106,16 +109,15 @@ body {
 
 .header-login h2 { color: #333; margin-bottom: 10px; }
 .header-login p { color: #666; font-size: 0.9em; margin-bottom: 25px; line-height: 1.4; }
-
 .btn-entrar { background: #4a90e2; color: white; }
 .btn-entrar:hover { background: #357abd; }
-
 .btn-cadastrar { background: #fafafa; color: #4a90e2; border: 1px solid #1d4ed8; }
 .btn-cadastrar:hover { background: #f0f0f0; }
 
 /* ==========================================================
    INPUTS GLOBAIS
    ========================================================== */
+
 input {
     padding: 12px;
     background-color: #ffffff;
@@ -149,6 +151,7 @@ button {
 /* ==========================================================
    HUD TOP BAR
    ========================================================== */
+
 .hud-panel {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
@@ -162,6 +165,7 @@ button {
     justify-content: space-between;
     align-items: center;
 }
+
 .hud-item { display: flex; flex-direction: column; gap: 2px; }
 .flex-row { flex-direction: row; align-items: center; gap: 15px; }
 .hud-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
@@ -191,6 +195,7 @@ button {
 /* ==========================================================
    GLASS CONTAINERS
    ========================================================== */
+
 .glass-container {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
@@ -203,20 +208,20 @@ button {
 }
 
 /* ==========================================================
-   BOAS-VINDAS / CABEÇALHOS DE CARD
+   CABEÇALHOS DE CARD
    ========================================================== */
+
 .welcome-box { text-align: center; margin: 40px 0 25px; }
 .welcome-box h1 { font-size: 2rem; margin-bottom: 8px; font-weight: 800; }
 .welcome-box p { color: var(--text-muted); }
-
 .card-header { border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 15px; }
 .card-title { font-size: 1.05rem; font-weight: 700; }
-
 .view-section { margin-top: 35px; }
 
 /* ==========================================================
    FORM GROUPS / TEXTAREAS
    ========================================================== */
+
 .form-group { margin-bottom: 15px; }
 .inline-form { display: flex; gap: 10px; }
 
@@ -248,7 +253,6 @@ button {
 }
 
 body.dark-theme .form-input, body.dark-theme .form-textarea { background: rgba(255, 255, 255, 0.03); }
-
 .form-textarea { resize: vertical; }
 
 .form-textarea:focus {
@@ -258,7 +262,7 @@ body.dark-theme .form-input, body.dark-theme .form-textarea { background: rgba(2
 
 .campoEstilo { width: 300px; }
 
-/* Textareas monoespaçados (código/config) */
+/* Textareas monoespaçados */
 .code-textarea {
     font-family: 'Consolas', 'Courier New', Courier, monospace;
     font-size: 0.85rem !important;
@@ -274,6 +278,7 @@ body.dark-theme .code-textarea {
 /* ==========================================================
    BOTÕES
    ========================================================== */
+
 .btn {
     border: none;
     padding: 10px 16px;
@@ -285,6 +290,7 @@ body.dark-theme .code-textarea {
     transition: background 0.2s;
     justify-content: center;
 }
+
 .btn-primary { background: var(--accent-color); color: white; justify-content: center; }
 .btn-primary:hover { background: var(--accent-hover); justify-content: center; }
 .btn-secondary { background: rgba(0, 0, 0, 0.05); color: var(--text-main); border: 1px solid var(--glass-border); }
@@ -304,7 +310,7 @@ body.dark-theme .btn-secondary { background: rgba(255, 255, 255, 0.05); }
     height: 10px;
 }
 
-/* Botão salvar (API key) */
+/* API key */
 .botao-salvar {
     padding: 10px 20px;
     background-color: #3b82f6;
@@ -315,12 +321,15 @@ body.dark-theme .btn-secondary { background: rgba(255, 255, 255, 0.05); }
     font-weight: 600;
     transition: background-color 0.2s;
 }
+
 .botao-salvar:hover { background-color: #2563eb; }
 
 /* ==========================================================
-   LISTAGEM DE PROJETOS (cards)
+   LISTAGEM DE PROJETOS
    ========================================================== */
+
 .projetos-lista-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+
 .projeto-card {
     background: rgba(0, 0, 0, 0.02);
     border: 1px solid var(--glass-border);
@@ -329,14 +338,16 @@ body.dark-theme .btn-secondary { background: rgba(255, 255, 255, 0.05); }
     cursor: pointer;
     transition: all 0.25s ease;
 }
+
 body.dark-theme .projeto-card { background: rgba(255, 255, 255, 0.02); }
 .projeto-card:hover { transform: translateY(-3px); border-color: var(--accent-color); background: var(--accent-light); }
 .projeto-card h3 { font-size: 1.1rem; margin-bottom: 5px; }
 .projeto-card span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
 
 /* ==========================================================
-   TELA DE FUNÇÕES DO PROJETO / GRID PRINCIPAL
+   TELA DE FUNÇÕES DO PROJETO
    ========================================================== */
+
 .navigation-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .projeto-atual-title { font-size: 1.3rem; font-weight: 700; }
 
@@ -363,6 +374,7 @@ body.dark-theme .projeto-card { background: rgba(255, 255, 255, 0.02); }
 /* ==========================================================
    ABAS
    ========================================================== */
+
 .nav-tabs {
     display: flex;
     gap: 12px;
@@ -371,6 +383,7 @@ body.dark-theme .projeto-card { background: rgba(255, 255, 255, 0.02); }
     margin-bottom: 20px;
     overflow-x: auto;
 }
+
 .nav-tab {
     background: transparent;
     border: none;
@@ -382,11 +395,13 @@ body.dark-theme .projeto-card { background: rgba(255, 255, 255, 0.02); }
     font-size: 0.85rem;
     white-space: nowrap;
 }
+
 .nav-tab.active { background: var(--accent-color); color: #fff; }
 
 /* ==========================================================
    CHECKLISTS
    ========================================================== */
+
 .campoConfig-container {
     display: flex;
     align-items: center;
@@ -409,6 +424,7 @@ body.dark-theme .projeto-card { background: rgba(255, 255, 255, 0.02); }
     padding: 4px;
     transition: color 0.2s;
 }
+
 .btn-excluir-item:hover { color: #ff8080; }
 
 /* ==========================================================
@@ -426,6 +442,7 @@ body.dark-theme .ai-message.bot { background: rgba(255, 255, 255, 0.04); }
 /* ==========================================================
    CAMPO DE API KEY
    ========================================================== */
+
 #apiKey {
     width: 250px;
     padding: 10px;
@@ -436,8 +453,9 @@ body.dark-theme .ai-message.bot { background: rgba(255, 255, 255, 0.04); }
 }
 
 /* ==========================================================
-   CAIXA DE DESIGN (config avulsa)
+   CAIXA DE DESIGN
    ========================================================== */
+
 .caixa-design {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -445,6 +463,7 @@ body.dark-theme .ai-message.bot { background: rgba(255, 255, 255, 0.04); }
     width: 350px;
     background-color: #fff;
 }
+
 .item-design { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .item-design span { font-size: 14px; }
 .item-design select { padding: 5px; border-radius: 4px; }
@@ -452,6 +471,7 @@ body.dark-theme .ai-message.bot { background: rgba(255, 255, 255, 0.04); }
 /* ==========================================================
    CAIXAS DE INFORMAÇÃO
    ========================================================== */
+
 .field-info-box {
     display: flex;
     align-items: center;
@@ -465,12 +485,14 @@ body.dark-theme .ai-message.bot { background: rgba(255, 255, 255, 0.04); }
     color: var(--text-muted);
     line-height: 1.4;
 }
+
 body.dark-theme .field-info-box { background: rgba(255, 255, 255, 0.02); }
 
 .alert-box {
     background: rgba(239, 68, 68, 0.04);
     border-color: rgba(239, 68, 68, 0.15);
 }
+
 .config-box {
     background: rgba(16, 185, 129, 0.04);
     border-color: rgba(16, 185, 129, 0.15);
@@ -479,6 +501,7 @@ body.dark-theme .field-info-box { background: rgba(255, 255, 255, 0.02); }
 /* ==========================================================
    ÍCONES SVG
    ========================================================== */
+
 .svg-icon {
     width: 16px;
     height: 16px;
@@ -486,11 +509,13 @@ body.dark-theme .field-info-box { background: rgba(255, 255, 255, 0.02); }
     vertical-align: middle;
     flex-shrink: 0;
 }
+
 .svg-accent { color: var(--accent-color); }
 
 /* ==========================================================
-   STATUS DOT — integrado ao contador de carregamento do JS
+   STATUS DOT
    ========================================================== */
+
 .status-dot {
     width: 12px;
     height: 12px;
@@ -517,12 +542,14 @@ body.dark-theme .field-info-box { background: rgba(255, 255, 255, 0.02); }
 /* ==========================================================
    UTILITÁRIOS DE VISIBILIDADE
    ========================================================== */
+
 .escondido { display: none !important; }
 .visivel { display: block !important; }
 
 /* ==========================================================
    RESPONSIVO
    ========================================================== */
+
 @media (max-width: 900px) {
     .main-grid { flex-direction: column; }
 }
